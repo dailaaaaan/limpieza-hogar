@@ -1,0 +1,565 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #20d0ca 0%, #f19926 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Calendario */
+.calendar-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+    color: #333;
+    font-size: 1.8em;
+}
+
+.nav-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background 0.3s;
+}
+
+.nav-btn:hover {
+    background: #5ca24b;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    color: #3d5555;
+    font-size: 0.9em;
+}
+
+.calendar-day {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 80px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Necesario para posicionar el badge de "Hoy" */
+.calendar-day {
+    position: relative;
+}
+
+.calendar-day:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day.other-month {
+    opacity: 0.3;
+}
+
+.day-number {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.day-tasks {
+    font-size: 0.75em;
+    color: #666;
+}
+
+.task-label {
+    display: block;
+    padding: 2px 0;
+}
+
+/* Estilos para el día actual */
+.calendar-day.today {
+    border-color: #ffbf47;
+    box-shadow: 0 6px 18px rgba(255, 191, 71, 0.15);
+    background: linear-gradient(180deg, #fff7e6 0%, #fffaf0 100%);
+}
+
+.today-badge {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: #ff8c00;
+    color: white;
+    font-weight: 700;
+    font-size: 0.7em;
+    padding: 3px 6px;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Secciones de limpieza */
+.cleaning-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.cleaning-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.cleaning-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.card-header h2 {
+    font-size: 1.5em;
+}
+
+.kitchen {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bathroom {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.living {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.task-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #e9ecef;
+    transition: background 0.2s;
+}
+
+.task-item:hover {
+    background: #f8f9fa;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.task-item label {
+    cursor: pointer;
+    color: #333;
+    font-size: 1em;
+}
+
+.responsible-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 120px;
+    font-size: 0.9em;
+}
+
+.responsible-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.modal-body {
+    margin-top: 20px;
+}
+
+.modal-body label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.modal-body input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.modal-body input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    resize: vertical;
+}
+
+.modal-body textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.save-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.save-btn:hover {
+    transform: scale(1.02);
+}
+
+/* Popup de asignaciones (1 de Noviembre) */
+.assign-popup {
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    padding: 12px 14px 10px 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 1100;
+    min-width: 180px;
+    max-width: 260px;
+    color: #333;
+    font-size: 0.95em;
+}
+
+.assign-popup .assign-close {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    cursor: pointer;
+    color: #888;
+    font-size: 18px;
+}
+
+.assign-popup .assign-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.assign-popup .assign-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.assign-popup .assign-row {
+    background: #f8f9fb;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #eef2f6;
+}
+
+/* Animaciones para popup */
+.assign-popup {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    transition: opacity 180ms ease, transform 180ms cubic-bezier(.2,.9,.2,1);
+}
+
+.assign-popup.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.assign-popup.closing {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+}
+
+/* Touch / Mobile optimizations */
+button, .details-btn, .nav-btn, .save-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.06);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Botones más grandes y accesibles en móviles */
+.details-btn {
+    padding: 10px 12px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Popups en móvil: fijarlos en la parte inferior y ampliar tamaño para mejor interacción táctil */
+@media (max-width: 480px) {
+    .calendar-section {
+        padding: 12px;
+    }
+
+    .calendar-grid {
+        gap: 6px;
+    }
+
+    .calendar-day {
+        min-height: 64px;
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .today-badge {
+        top: 8px;
+        right: 8px;
+        padding: 4px 7px;
+        font-size: 0.75em;
+    }
+
+    .details-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .task-item {
+        grid-template-columns: auto 1fr;
+        gap: 8px;
+    }
+
+    /* Make popups fixed and full-width with comfortable padding */
+    .assign-popup,
+    .task-popup {
+        position: fixed !important;
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 12px !important;
+        top: auto !important;
+        margin: 0 auto;
+        transform-origin: bottom center;
+        max-width: none;
+        min-width: auto;
+        padding: 14px;
+    }
+
+    .assign-popup .assign-list,
+    .task-popup .task-body {
+        font-size: 0.98em;
+    }
+
+    /* Modal padding / width tweaks */
+    .modal-content {
+        margin: 14% auto;
+        width: 96%;
+        max-width: 520px;
+        padding: 18px;
+    }
+
+    /* Improve calendar horizontal scroll on narrow devices */
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(48px, 1fr));
+    }
+}
+
+/* Slightly larger hit targets for all interactive elements */
+@media (max-width: 768px) {
+    .nav-btn, .save-btn {
+        padding: 12px 16px;
+    }
+}
+
+/* Botón 'Más detalles' dentro de cada tarea */
+.details-btn {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #333;
+    transition: background 0.15s, transform 0.12s;
+}
+
+.details-btn:hover {
+    background: #f1f5f9;
+    transform: translateY(-1px);
+}
+
+/* Popup de detalles de tarea */
+.task-popup {
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    padding: 12px 14px 12px 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 1200;
+    min-width: 220px;
+    max-width: 320px;
+    color: #333;
+    font-size: 0.95em;
+}
+
+.task-popup .task-close {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    cursor: pointer;
+    color: #888;
+    font-size: 18px;
+}
+
+.task-popup .task-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.task-popup .task-body {
+    color: #444;
+    line-height: 1.3;
+}
+
+.task-popup {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    transition: opacity 180ms ease, transform 180ms cubic-bezier(.2,.9,.2,1);
+}
+
+.task-popup.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.task-popup.closing {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .calendar-grid {
+        gap: 5px;
+    }
+    
+    .calendar-day {
+        min-height: 60px;
+        padding: 5px;
+        font-size: 0.85em;
+    }
+    
+    .cleaning-sections {
+        grid-template-columns: 1fr;
+    }
+    
+    .task-item {
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+    }
+    
+    .responsible-input {
+        grid-column: 2;
+        width: 100%;
+    }
+}

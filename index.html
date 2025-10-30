@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador de Limpieza del Hogar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Organizador de Limpieza del Hogar</h1>
+            <p>¿No sabes cuando te toca? Mira aqui ↓</p>
+        </header>
+
+        <!-- Calendario -->
+        <section class="calendar-section">
+            <div class="calendar-header">
+                <button id="prevMonth" class="nav-btn">◀</button>
+                <h2 id="currentMonth"></h2>
+                <button id="nextMonth" class="nav-btn">▶</button>
+            </div>
+            <div id="calendar" class="calendar-grid"></div>
+        </section>
+
+        <!-- Secciones de limpieza -->
+        <div class="cleaning-sections">
+            <!-- Cocina -->
+            <section class="cleaning-card">
+                <div class="card-header kitchen">
+                    <h2>🍳 Cocina</h2>
+                </div>
+                <div class="card-body">
+                    <div class="task-item">
+                        <input type="checkbox" id="kitchen1">
+                        <label for="kitchen1">Limpiar armarios </label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="kitchen2">
+                        <label for="kitchen2">Lavar la base de plastico de platos</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="kitchen3">
+                        <label for="kitchen3">Limpiar horno y el microondas</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="kitchen4">
+                        <label for="kitchen4">Limpiar la nevera</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="kitchen5">
+                        <label for="kitchen5">Barrer y Fregar el suelo</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="kitchen5">
+                        <label for="kitchen5">Limpiar estractor de humos</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Baño -->
+            <section class="cleaning-card">
+                <div class="card-header bathroom">
+                    <h2>🚿 Baño</h2>
+                </div>
+                <div class="card-body">
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom1">
+                        <label for="bathroom1">Limpiar inodoro</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom2">
+                        <label for="bathroom2">Limpiar ducha</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                        <div class="task-item">
+                        <input type="checkbox" id="bathroom5">
+                        <label for="bathroom5">Limpiar paredes</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom3">
+                        <label for="bathroom3">Limpiar lava manos y espejo</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom4">
+                        <label for="bathroom4">Barrer y Fregar el suelo</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom5">
+                        <label for="bathroom5">Cambiar toallas</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom5">
+                        <label for="bathroom5">Limpiar cubo Basura</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="bathroom5">
+                        <label for="bathroom5">Limpiar Ventana y puerta</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sala -->
+            <section class="cleaning-card">
+                <div class="card-header living">
+                    <h2>🛋️ Sala</h2>
+                </div>
+                <div class="card-body">
+                    <div class="task-item">
+                        <input type="checkbox" id="living2">
+                        <label for="living2">Quitar el polvo</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>                    
+                    <div class="task-item">
+                        <input type="checkbox" id="living1">
+                        <label for="living1">Pasar la aspiradora</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="living3">
+                        <label for="living3">Ordenar cojines y mantas</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="living4">
+                        <label for="living4">Limpiar ventanas</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="living5">
+                        <label for="living5">Fregar el suelo</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="living5">
+                        <label for="living5">Limpiar pasillos</label>
+                        <button class="details-btn">Más detalles</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal para editar día -->
+    <div id="dayModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <div class="modal-body">
+                <label>Responsable de cocina:</label>
+                <input type="text" id="modalKitchen" placeholder="Nombre">
+                
+                <label>Responsable de baño:</label>
+                <input type="text" id="modalBathroom" placeholder="Nombre">
+                
+                <label>Responsable de sala:</label>
+                <input type="text" id="modalLiving" placeholder="Nombre">
+                
+                <button id="saveDay" class="save-btn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles de tarea (editable) -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span id="taskModalClose" class="close">&times;</span>
+            <h3 id="taskModalTitle">Detalles</h3>
+            <div class="modal-body">
+                <label for="taskDetailsText">Instrucciones / Notas:</label>
+                <textarea id="taskDetailsText" rows="6" placeholder="Buenas"></textarea>
+                <button id="saveTaskDetails" class="save-btn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
