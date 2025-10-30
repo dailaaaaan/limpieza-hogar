@@ -40,6 +40,11 @@ header p {
     margin-bottom: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+/* Allow horizontal scrolling of the calendar on very narrow screens (touch-friendly) */
+.calendar-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
 .calendar-header {
     display: flex;
@@ -462,6 +467,9 @@ button, .details-btn, .nav-btn, .save-btn {
         display: grid;
         grid-template-columns: repeat(7, minmax(48px, 1fr));
     }
+
+    /* Ensure grid keeps a minimum width so columns remain usable on tiny screens */
+    .calendar-grid { min-width: 560px; }
 }
 
 /* Slightly larger hit targets for all interactive elements */

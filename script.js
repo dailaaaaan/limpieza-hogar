@@ -6,6 +6,9 @@ let selectedDay = null;
 const today = new Date();
 // Task modal state
 let currentTaskId = null;
+// Debounce for day clicks to avoid rapid-multiple taps on mobile
+let lastDayClick = 0;
+const DAY_CLICK_DEBOUNCE = 200; // ms
 
 // Inicializar la aplicación
 document.addEventListener('DOMContentLoaded', function() {
@@ -57,6 +60,14 @@ function setupEventListeners() {
     const saveTaskBtn = document.getElementById('saveTaskDetails');
     if (saveTaskBtn) saveTaskBtn.addEventListener('click', saveTaskDetails);
 
+    // Assignments modal close handler
+    const assignModalClose = document.getElementById('assignModalClose');
+    const assignModal = document.getElementById('assignModal');
+    if (assignModalClose && assignModal) {
+        assignModalClose.addEventListener('click', () => { assignModal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === assignModal) assignModal.style.display = 'none'; });
+    }
+
     // Añadir listeners a los botones 'Más detalles' en las tareas
     const detailBtns = document.querySelectorAll('.details-btn');
     detailBtns.forEach(btn => {
@@ -65,6 +76,20 @@ function setupEventListeners() {
             showTaskDetailsPopup(btn);
         });
     });
+
+    // Delegated handler for calendar day clicks (reduces per-cell listeners)
+    const calendarEl = document.getElementById('calendar');
+    if (calendarEl) {
+        calendarEl.addEventListener('click', (e) => {
+            const cell = e.target.closest('.calendar-day');
+            if (!cell) return;
+            const day = Number(cell.dataset.day);
+            const month = Number(cell.dataset.month);
+            const year = Number(cell.dataset.year);
+            if (!Number.isFinite(day) || !Number.isFinite(month) || !Number.isFinite(year)) return;
+            onDayClick(e, day, month, year, cell);
+        });
+    }
 }
 
 // Renderizar calendario
@@ -172,7 +197,10 @@ function createDayCell(day, month, year, isOtherMonth) {
         console.error('Error al comparar fecha de hoy:', e);
     }
 
-    cell.addEventListener('click', (e) => onDayClick(e, day, month, year, cell));
+    // store date on element for delegated handling
+    cell.dataset.day = day;
+    cell.dataset.month = month;
+    cell.dataset.year = year;
     
     document.getElementById('calendar').appendChild(cell);
 }
@@ -237,6 +265,9 @@ function loadCalendarData() {
 
 // Handler general al clicar un día
 function onDayClick(event, day, month, year, cellElement) {
+    // debounce rapid taps
+    if (Date.now() - lastDayClick < DAY_CLICK_DEBOUNCE) return;
+    lastDayClick = Date.now();
     // Mostrar popup especial para 1, 8 y 15 de Noviembre (mes 10 porque enero = 0)
     if (month === 10 && (day === 1 || day === 8 || day === 15 || day === 22)) {
         const dateKey = `${year}-${month}-${day}`;
@@ -270,8 +301,8 @@ function onDayClick(event, day, month, year, cellElement) {
                     living: 'Benjamin',
                     kitchen: 'Dylan',
                     bathroom: 'Justin'
-                };
-            saveCalendarData();
+        };
+    saveCalendarData();
         }
 
         // Labels para mostrar (usar 'Baños' para el día 8 si el usuario lo pidió así)
@@ -289,29 +320,16 @@ function onDayClick(event, day, month, year, cellElement) {
     return;
 }
 
-// Mostrar popup con asignaciones junto a la celda clicada
+// Mostrar asignaciones usando el modal HTML en lugar de popups flotantes
 function showAssignmentsPopup(cellElement, assignments, labels = {kitchen: 'Cocina', bathroom: 'Baño', living: 'Sala'}) {
-    hideAssignmentsPopup(); // cerrar si hay otro abierto
+    const modal = document.getElementById('assignModal');
+    const listEl = document.getElementById('assignModalList');
+    const titleEl = document.getElementById('assignModalTitle');
+    if (!modal || !listEl || !titleEl) return;
 
-    const popup = document.createElement('div');
-    popup.id = 'assignPopup';
-    popup.className = 'assign-popup';
+    titleEl.textContent = 'Asignaciones';
+    listEl.innerHTML = '';
 
-    const closeBtn = document.createElement('span');
-    closeBtn.className = 'assign-close';
-    closeBtn.innerHTML = '&times;';
-    closeBtn.addEventListener('click', hideAssignmentsPopup);
-    popup.appendChild(closeBtn);
-
-    const title = document.createElement('div');
-    title.className = 'assign-title';
-    title.textContent = 'Asignaciones';
-    popup.appendChild(title);
-
-    const list = document.createElement('div');
-    list.className = 'assign-list';
-
-    // assignments expected in shape {kitchen: name, bathroom: name, living: name}
     const mapping = [
         ['kitchen', labels.kitchen || 'Cocina'],
         ['bathroom', labels.bathroom || 'Baño'],
@@ -323,71 +341,16 @@ function showAssignmentsPopup(cellElement, assignments, labels = {kitchen: 'Coci
             const row = document.createElement('div');
             row.className = 'assign-row';
             row.textContent = `${assignments[key]}: ${placeLabel}`;
-            list.appendChild(row);
+            listEl.appendChild(row);
         }
     });
-    popup.appendChild(list);
 
-    document.body.appendChild(popup);
-
-    // Forzar reflow and open class for animation
-    // Posicionar el popup cerca de la celda (do before measuring)
-    const rect = cellElement.getBoundingClientRect();
-    // default left/top while hidden
-    popup.style.left = '0px';
-    popup.style.top = '0px';
-
-    const popupRect = popup.getBoundingClientRect();
-    const topPos = window.scrollY + rect.top - popupRect.height - 8; // arriba de la celda
-    const leftPos = window.scrollX + rect.left + Math.max(0, (rect.width - popupRect.width) / 2);
-
-    // Si no cabe arriba, poner debajo
-    if (topPos < window.scrollY + 10) {
-        popup.style.top = (window.scrollY + rect.bottom + 8) + 'px';
-    } else {
-        popup.style.top = topPos + 'px';
-    }
-
-    popup.style.left = Math.max(8, leftPos) + 'px';
-
-    // Abrir con animación
-    requestAnimationFrame(() => {
-        popup.classList.add('open');
-    });
-
-    // Cerrar al clicar fuera
-    setTimeout(() => {
-        window.addEventListener('click', outsideClickListener);
-    }, 0);
-
-    function outsideClickListener(e) {
-        if (!popup.contains(e.target) && !cellElement.contains(e.target)) {
-            hideAssignmentsPopup();
-        }
-    }
-
-    // Guardar la referencia para poder quitar el listener
-    popup._outsideClickListener = outsideClickListener;
-}
-    // Guardar la referencia para poder quitar el listener
-    popup._outsideClickListener = outsideClickListener;
+    modal.style.display = 'block';
 }
 
 function hideAssignmentsPopup() {
-    const existing = document.getElementById('assignPopup');
-    if (existing) {
-        if (existing._outsideClickListener) {
-            window.removeEventListener('click', existing._outsideClickListener);
-        }
-        // Añadir clase de cierre para animación y eliminar tras la transición
-        existing.classList.remove('open');
-        existing.classList.add('closing');
-        const timeout = 220; // ms (coincide con la transición CSS)
-        setTimeout(() => {
-            const el = document.getElementById('assignPopup');
-            if (el) el.remove();
-        }, timeout);
-    }
+    const modal = document.getElementById('assignModal');
+    if (modal) modal.style.display = 'none';
 }
 
 /* Popup de detalles de tarea (botón 'Más detalles') */
